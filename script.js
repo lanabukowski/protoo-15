@@ -37,25 +37,39 @@
 // objB.intro();
 
 
-let objA = {
-    character: 'antihero',
-    intro() { console.log("I'm angry");}
-};
+function ObjectA(character) {
+    this.character = character;
+}
 
-function Create(){};
+ObjectA.prototype.getCharacter = function(character) {
+    console.log(`object's character is ${this.character}`);
+}
 
-Create.prototype = objA;
+function ObjectB(character, color) {
+    ObjectA.call(this, character);
+    this.color = color;
+}
 
-let objB = new Create;
-objB.color = 'black';
-objB.getQuestion = function() { console.log("Why?");};
+ObjectB.prototype = Object.create(ObjectA.prototype);
+ObjectB.prototype.constructor = ObjectB;
+ObjectB.prototype.getColor = function(color) { 
+    console.log(`object's color is ${this.color}`);
+}
 
-Create.prototype = objB;
-
-let objC = new Create;
-objC.size =  'big';
-objC.sayHi = function() { alert("Hi");};
+let objB = new ObjectB('antihero', 'black');
+console.log(objB);
 
 
-console.log(objB.character);
-objC.getQuestion();
+function ObjectС(character, color, size) {
+    ObjectB.call(this, character, color);
+    this.size = size;
+}
+
+ObjectС.prototype = Object.create(ObjectB.prototype);
+ObjectС.prototype.constructor = ObjectС;
+ObjectС.prototype.getSize = function(size) { 
+    console.log(`object's size is ${this.size}`);
+}
+
+let objC = new ObjectС('antihero', 'black', 'big');
+console.log(objC);
